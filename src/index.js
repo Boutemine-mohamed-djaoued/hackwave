@@ -4,7 +4,10 @@ import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
+import router from "./routes/router.js";
+import dotenv from "dotenv";
 // import "./strategies/local.mjs";
+dotenv.config();
 const app = express();
 
 mongoose
@@ -38,4 +41,10 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log("Server is running on port 3000");
+});
+
+app.use("/", router);
+
+app.get("/", (req, res) => {
+  res.json("hello world");
 });
