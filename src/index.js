@@ -4,7 +4,11 @@ import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
-// import "./strategies/local.mjs";
+import router from "./routes/calls.js";
+import dotenv from "dotenv"
+
+dotenv.config()
+
 const app = express();
 
 mongoose
@@ -33,6 +37,14 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/",router)
+
+
+
+
+
+
 
 const PORT = process.env.PORT || 3000;
 
