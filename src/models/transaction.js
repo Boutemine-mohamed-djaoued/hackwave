@@ -1,9 +1,33 @@
 import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema({
-  sender: { type: String, required: true },
-  receiver: { type: String, required: true },
-  state: { type: String, required: true },
+  _id : {
+    type : mongoose.Types.ObjectId,
+    required:true,
+  }, 
+  cardNumber: {
+    type:String,
+    required:true
+  },
+  amount: {
+    type:String,
+    required:true,
+  },
+  type: {
+    type:String,
+    enum:["IN","OUT"],
+    required:true,
+  },
+  status: {
+    type:String,
+    enum:["Completed","Failed"],
+    required:true,  
+  },
+  description: {
+    type:String,
+    required:true,
+  }
 });
 
-export const Transaction = mongoose.model("Transaction", transactionSchema);
+const Transaction = mongoose.model("Transaction", transactionSchema);
+export default Transaction

@@ -6,7 +6,8 @@ const infoSchema = new mongoose.Schema(
     password: { type: String, required: true },
     email: { type: String, required: true },
     transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Transaction" }],
-    phoneNumber: { type: String, required: true, unique: true },
+    cards:[{type:mongoose.Schema.Types.ObjectId, ref: "Card"}],
+    phoneNumber: { type: String, required: true },
   },
   { discriminatorKey: "role", collection: "infos" }
 );
@@ -24,7 +25,7 @@ const Agent = Info.discriminator(
   "Agent",
   new mongoose.Schema({
     onCall: { type: mongoose.Schema.Types.ObjectId, ref: "Client" },
-    ticket: { type: String },
+    activeTicket: { type: mongoose.Schema.Types.ObjectId ,ref:"Ticket"},
   })
 );
 

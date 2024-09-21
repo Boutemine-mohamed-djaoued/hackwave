@@ -1,3 +1,4 @@
+import http from "http";
 import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -6,7 +7,12 @@ import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import router from "./routes/router.js";
 import dotenv from "dotenv";
+import cors from "cors";
 // import "./strategies/local.mjs";
+
+import ws from "./lib/ws.js";
+import { Server } from "socket.io";
+
 dotenv.config();
 const app = express();
 
@@ -21,6 +27,7 @@ mongoose
 
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cors());
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
@@ -37,22 +44,22 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/",router)
-
-
-
-
-
-
+app.use("/", router);
+app.get("/", (req, res) => {
+  res.json("hello world");
+});
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log("Server is running on port 3000");
+const server = http.createServer(app);
+global.io = new Server(server,{cors:{origin:"*"}});
+// console.log(global.io)
+global.io.on("connection", (socket) => {
+  console.log("connected");
+  ws.connection(socket);
 });
 
-app.use("/", router);
-
-app.get("/", (req, res) => {
-  res.json("hello world");
+server.listen(PORT);
+server.on("listening", () => {
+  console.log("Server is running on port 3000/");
 });

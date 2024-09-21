@@ -1,0 +1,6 @@
+- transaction :
+    - TPE (rederiction a assitance humaine)
+    - DAB : Distr, (debiator / error) => redirection vers a sa bank
+    - E payment
+- status de carte : active ou non , max credit , 
+- redirection des appel (algerie post)
